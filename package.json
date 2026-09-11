@@ -1,0 +1,34 @@
+{
+  "name": "1chan",
+  "version": "1.0.0",
+  "description": "4chan 风格的校园匿名论坛（Express + PostgreSQL/SQLite + 云存储，支持 Vercel）",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "vercel-build": "node -e \"console.log('Vercel: no framework build step required')\""
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "keywords": [
+    "forum",
+    "express",
+    "sqlite",
+    "4chan",
+    "anonymous"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "cloudinary": "^2.11.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "multer": "^2.0.2",
+    "node-cron": "^3.0.3",
+    "pg": "^8.23.0"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^12.11.1"
+  }
+}
