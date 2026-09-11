@@ -1,0 +1,16 @@
+node_modules
+data
+uploads
+server.js
+.env
+.env.*
+!.env.example
+*.log
+.git
+.vercel
+.npm-cache
+# 确保 Vercel 一定不会忽略函数与源码目录
+!api/**
+!src/**
+!public/**
+!private/**
