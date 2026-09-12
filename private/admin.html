@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2430">
+  <title>管理登录</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <div id="loginView" class="login-view">
+      <div class="card login-card">
+        <h1>管理登录</h1>
+        <p class="admin-hint">请输入管理密码后使用管理功能。</p>
+        <form id="loginForm">
+          <input type="password" id="loginPassword" autocomplete="current-password" placeholder="管理密码">
+          <button type="submit" class="btn btn-primary btn-block" id="loginBtn">登 录</button>
+          <p id="loginError" class="form-error center"></p>
+        </form>
+        <p class="admin-hint center">连续输错会临时锁定</p>
+      </div>
+    </div>
+
+    <div id="dashboard" class="invisible">
+      <header class="admin-topbar">
+        <div>
+          <h1>管理后台</h1>
+          <p id="dashHint" class="admin-hint"></p>
+        </div>
+        <div class="admin-topbar-actions">
+          <button class="btn btn-small" id="refreshBtn" type="button">刷新</button>
+          <a class="btn btn-small" href="/" target="_blank" rel="noopener">查看前台</a>
+          <button class="btn btn-small btn-danger" id="logoutBtn" type="button">退出登录</button>
+        </div>
+      </header>
+
+      <section id="statCards" class="stat-grid"></section>
+
+      <div class="admin-grid">
+        <div class="admin-col">
+          <section class="card admin-card">
+            <div class="card-head">
+              <h2>论坛封面图</h2>
+              <span class="admin-hint">JPG / PNG，最大 2MB</span>
+            </div>
+            <form id="coverForm">
+              <div class="cover-preview-box">
+                <img id="coverPreview" class="cover-preview invisible" alt="当前封面">
+                <div id="coverEmpty" class="cover-empty">当前没有封面，首页显示默认简洁标题样式</div>
+              </div>
+              <div class="field">
+                <label for="coverFile">选择图片</label>
+                <input type="file" id="coverFile" accept="image/jpeg,image/png">
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">上传 / 更换封面</button>
+                <button type="button" class="btn btn-danger" id="coverRemoveBtn">移除封面</button>
+                <span id="coverMsg" class="form-error"></span>
+              </div>
+            </form>
+          </section>
+
+          <section class="card admin-card">
+            <h2>首页标题与说明</h2>
+            <form id="settingsForm">
+              <div class="field">
+                <label for="siteTitle">首页标题</label>
+                <input type="text" id="siteTitle" maxlength="80">
+              </div>
+              <div class="field">
+                <label for="siteDescription">首页说明</label>
+                <textarea id="siteDescription" rows="2" maxlength="500"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">保存设置</button>
+                <span id="settingsMsg" class="form-error"></span>
+              </div>
+            </form>
+          </section>
+
+          <section class="card admin-card">
+            <div class="card-head">
+              <h2>分区管理</h2>
+              <span class="admin-hint">标识用于 URL，只支持小写字母、数字和连字符</span>
+            </div>
+            <div id="boardRows" class="board-rows"></div>
+            <hr class="soft-rule">
+            <div class="board-add-row">
+              <input type="text" id="newBoardCode" class="bc" maxlength="30" placeholder="标识 general">
+              <input type="text" id="newBoardName" class="bn" maxlength="30" placeholder="名称 综合">
+              <input type="text" id="newBoardDesc" class="bd" maxlength="200" placeholder="简短说明">
+              <button type="button" class="btn btn-small btn-primary" id="addBoardBtn">添加分区</button>
+            </div>
+          </section>
+
+          <section class="card admin-card">
+            <h2>发布管理帖</h2>
+            <form id="adminPostForm">
+              <div class="field">
+                <label for="adminBoardId">发布到分区</label>
+                <select id="adminBoardId"></select>
+              </div>
+              <div class="field">
+                <label for="adminThreadId">回复主题 No. <span class="optional">留空则发布新主题</span></label>
+                <input type="number" id="adminThreadId" min="1" placeholder="例如 12">
+              </div>
+              <div class="field">
+                <label for="adminSubject">主题标题 <span class="optional">仅新主题</span></label>
+                <input type="text" id="adminSubject" maxlength="120">
+              </div>
+              <div class="field">
+                <label for="adminContent">内容</label>
+                <textarea id="adminContent" rows="3" maxlength="4000"></textarea>
+              </div>
+              <div class="field">
+                <label for="adminImage">图片 <span class="optional">可选</span></label>
+                <input type="file" id="adminImage" name="image" accept="image/jpeg,image/png,image/gif,image/webp">
+              </div>
+              <label class="check-line">
+                <input type="checkbox" id="adminSticky"> 同时置顶（仅新主题）
+              </label>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">发布管理帖</button>
+                <span id="adminPostMsg" class="form-error"></span>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div class="admin-col">
+          <section class="card admin-card">
+            <div class="card-head">
+              <h2>帖子管理</h2>
+              <span class="admin-hint">最近 300 条</span>
+            </div>
+            <div class="filter-row">
+              <input type="text" id="postFilter" placeholder="按 No. / 分区 / 内容筛选">
+            </div>
+            <div class="table-scroll">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>分区</th>
+                    <th>时间</th>
+                    <th>内容</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="postTableBody"></tbody>
+              </table>
+            </div>
+            <p id="postListMsg" class="form-error"></p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastBox" class="toast-box"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

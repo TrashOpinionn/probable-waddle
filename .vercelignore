@@ -9,7 +9,8 @@ server.js
 .git
 .vercel
 .npm-cache
-# 确保 Vercel 一定不会忽略函数与源码目录
+
+# 确保 Vercel 不会忽略函数和源码目录
 !api/**
 !src/**
 !public/**

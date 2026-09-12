@@ -1,7 +1,22 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/sch-admin-2026", "destination": "/api" },
-    { "source": "/sch-admin-2026/(.*)", "destination": "/api" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/sch-admin-2026",
+      "destination": "/api"
+    },
+    {
+      "source": "/sch-admin-2026/(.*)",
+      "destination": "/api"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/cleanup",
+      "schedule": "0 3 * * *"
+    }
   ]
 }

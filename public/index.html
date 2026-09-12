@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#8b1f2f">
+  <title>首页 · 校园匿名版</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page home-page">
+    <header class="site-header">
+      <div id="coverWrap" class="cover-wrap invisible">
+        <img id="coverImage" class="cover-image" alt="论坛封面">
+      </div>
+      <div class="header-main">
+        <h1 id="siteTitle" class="site-title">校园匿名版</h1>
+        <p id="siteDesc" class="site-desc"></p>
+      </div>
+      <div class="header-pills">
+        <span class="pill">匿名发帖</span>
+        <span class="pill">无需注册</span>
+        <span class="pill">每月自动清理</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="section-head">
+          <h2>分区列表</h2>
+          <span class="muted">选择一个分区开始浏览</span>
+        </div>
+        <div id="boardList" class="board-list">
+          <p class="muted">正在加载…</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      所有用户均以匿名身份发言，请友善交流。<br>
+      帖子发布满 30 天后，将由每月任务自动清理。
+    </footer>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/home.js"></script>
+</body>
+</html>

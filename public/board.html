@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#8b1f2f">
+  <title>分区 · 校园匿名版</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header compact">
+      <nav class="crumb">
+        <a href="/">首页</a>
+        <span class="crumb-sep">/</span>
+        <span>分区</span>
+      </nav>
+      <h1 id="boardTitle" class="page-title">…</h1>
+      <p id="boardDesc" class="site-desc"></p>
+    </header>
+
+    <main>
+      <fieldset class="card form-card">
+        <legend>发表新主题</legend>
+        <form id="newThreadForm" enctype="multipart/form-data">
+          <div class="field">
+            <label for="subject">主题 <span class="optional">可选</span></label>
+            <input type="text" id="subject" name="subject" maxlength="120" placeholder="给主题起个简短标题">
+          </div>
+          <div class="field">
+            <label for="content">正文</label>
+            <textarea id="content" name="content" rows="4" maxlength="4000" placeholder="想说点什么…"></textarea>
+          </div>
+          <div class="field">
+            <label for="image">图片 <span class="optional">可选</span></label>
+            <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp">
+            <p id="imageHint" class="field-hint">支持 JPG / PNG / GIF / WEBP，且会校验真实文件内容</p>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">发布主题</button>
+            <span id="formError" class="form-error"></span>
+          </div>
+        </form>
+      </fieldset>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>主题列表</h2>
+          <span id="threadCountLabel" class="muted"></span>
+        </div>
+        <div id="threadList" class="thread-list">
+          <p class="muted">正在加载…</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">帖子发布满 30 天后将连同图片自动清理。</footer>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/board.js"></script>
+</body>
+</html>
