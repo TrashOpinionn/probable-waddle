@@ -6,6 +6,9 @@ const crypto = require('crypto');
 
 const rootDir = path.resolve(__dirname, '..');
 const envFile = path.join(rootDir, '.env');
+const isVercel = !!process.env.VERCEL;
+const isHuggingFace = !!(process.env.SPACE_ID || process.env.SPACE_HOST);
+const isHosted = isVercel || isHuggingFace;
 
 // 有 .env 就加载；没有且外部也没有给 ADMIN_PASSWORD 时，自动生成一份 .env。
 if (fs.existsSync(envFile)) {
@@ -17,7 +20,7 @@ function env(name, fallback) {
   return v === undefined || v === '' ? fallback : v;
 }
 
-if (!fs.existsSync(envFile) && !env('ADMIN_PASSWORD', '')) {
+if (!fs.existsSync(envFile) && !env('ADMIN_PASSWORD', '') && !isHosted) {
   const generatedPassword = crypto.randomBytes(9).toString('base64url');
   const generatedSalt = crypto.randomBytes(16).toString('hex');
   const sample = [
@@ -43,8 +46,7 @@ if (!fs.existsSync(envFile) && !env('ADMIN_PASSWORD', '')) {
   process.exit(1);
 }
 
-const isSpaceHost = !!(process.env.SPACE_ID || process.env.SPACE_HOST);
-let port = Number(env('PORT', isSpaceHost ? '7860' : '3000'));
+let port = Number(env('PORT', isHuggingFace ? '7860' : '3000'));
 if (!Number.isInteger(port) || port < 1 || port > 65535) {
   port = 3000;
 }
@@ -57,8 +59,6 @@ if (adminPath === '/' || adminPath.length < 3) {
   process.exit(1);
 }
 
-const isVercel = !!process.env.VERCEL;
-const isHuggingFace = !!(process.env.SPACE_ID || process.env.SPACE_HOST);
 const retentionDays = Math.max(1, parseInt(env('POST_RETENTION_DAYS', '30'), 10) || 30);
 const requestedMaxUploadMb = Math.min(
   50,
@@ -130,8 +130,15 @@ const dataDir = path.join(rootDir, 'data');
 const dbPath = env('DB_PATH', '')
   ? path.resolve(rootDir, env('DB_PATH', ''))
   : path.join(dataDir, 'forum.db');
-fs.mkdirSync(uploadDir, { recursive: true });
-fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+
+// 只有在本地开发模式才创建本地目录。
+// Vercel / Hugging Face 的容器文件系统通常是只读或临时的，不能 mkdir。
+if (storageDriver === 'local' && !isHosted) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+if (!databaseUrl && !isHosted) {
+  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+}
 
 module.exports = {
   rootDir,
@@ -158,6 +165,7 @@ module.exports = {
   postCooldownSeconds,
   isVercel,
   isHuggingFace,
+  isHosted,
   cronSecret,
   sessionSecret,
   databaseUrl,

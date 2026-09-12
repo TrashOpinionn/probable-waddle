@@ -241,7 +241,9 @@ function init() {
       await execPgScript(POSTGRES_SCHEMA);
     } else {
       const Database = require('better-sqlite3');
-      fs.mkdirSync(path.dirname(config.dbPath), { recursive: true });
+      if (!config.isHosted) {
+        fs.mkdirSync(path.dirname(config.dbPath), { recursive: true });
+      }
       sqlite = new Database(config.dbPath);
       sqlite.pragma('journal_mode = WAL');
       sqlite.pragma('foreign_keys = ON');
